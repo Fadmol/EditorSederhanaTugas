@@ -87,24 +87,39 @@ public class MainActivity extends AppCompatActivity {
      * @return Semua isi berkas.
      */
     private String bacaBerkas() {
+        // Karena berkas hanya dibaca per baris maka perlu bantuan StringWriter untuk menggabungkan
+        // semua baris yang dibaca
         StringWriter stringWriter = new StringWriter();
 
         FileInputStream berkasStream = null;
         try {
+            // Buka berkas untuk dibaca, pakai buffer biar lebih efisien
             berkasStream = new FileInputStream(new File(NAMA_BERKAS));
             InputStreamReader berkasStreamReader = new InputStreamReader(berkasStream);
             BufferedReader berkasBuffered = new BufferedReader(berkasStreamReader);
+
+            // Tandai ini masih membaca baris pertam
             boolean barisPertama = true;
 
             String satuBaris = null;
             try {
+                // Baca satu baris
                 satuBaris = berkasBuffered.readLine();
-                while (satuBaris != null) {
+                while (satuBaris != null) { // Selagi masih ada baris yang masih bisa dibaca
+                    // Periksa apakah ini baris pertama atau tidak.
+                    // Jika baris pertama maka tidak ada \n sebelumnya
+                    // jika bukan baris pertama maka ada \n untuk memisahkannya dengan baris
+                    // sebelumnya
                     if (barisPertama == false)
                         stringWriter.write("\n");
                     else
                         barisPertama = false;
+
+                    // Serahkan baris yang baru dibaca ke StringWriter agar dapat disambung dengan
+                    // baris-baris yang telah dibaca sebelumnya.
                     stringWriter.write(satuBaris);
+
+                    // Baca lagi satu baris
                     satuBaris = berkasBuffered.readLine();
                 }
             }
@@ -112,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 salah.printStackTrace();
             }
             finally {
+                // Jangan lupa ditutup
                 berkasBuffered.close();
             }
         }
@@ -120,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (IOException salah) {
             salah.printStackTrace();
+        }
+
+        // Kembalikan isi berkas
         return stringWriter.toString();
     }
 
