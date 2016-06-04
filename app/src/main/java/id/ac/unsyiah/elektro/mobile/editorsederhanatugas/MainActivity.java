@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void clickBtnSimpan(View view) {
         EditText txtIsi = (EditText) findViewById(R.id.editText);
         String isi = txtIsi.getText().toString();
-        simpanBerkas(isi);
+        spnBerkas(isi);
     }
 
 
@@ -142,12 +142,8 @@ public class MainActivity extends AppCompatActivity {
         return stringWriter.toString();
     }
 
-    /**
-     * Menulis ke suatu berkas text.
-     *
-     * @param isi Apa yang harus ditulis ke berkas.
-     */
-    private void simpanBerkas(String isi) {
+    
+    private void spnBerkas(String isi) {
         FileOutputStream berkasStream = null;
         try {
             berkasStream = new FileOutputStream (new File(NAMA_BERKAS));
